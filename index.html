@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +20,7 @@
             --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.1);
             --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
-            
+
             /* Spacing */
             --spacing-xs: 10px;
             --spacing-sm: 15px;
@@ -27,14 +28,14 @@
             --spacing-lg: 30px;
             --spacing-xl: 40px;
             --spacing-2xl: 60px;
-            
+
             /* Border Radius */
             --radius-sm: 15px;
             --radius-md: 20px;
             --radius-lg: 25px;
             --radius-xl: 30px;
             --radius-full: 50px;
-            
+
             /* Font Sizes */
             --text-xs: 18px;
             --text-sm: 24px;
@@ -80,8 +81,15 @@
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         /* Fallende Peppa Pigs */
@@ -106,12 +114,15 @@
                 transform: translateY(-100px) rotate(0deg);
                 opacity: 0;
             }
+
             10% {
                 opacity: 1;
             }
+
             90% {
                 opacity: 1;
             }
+
             100% {
                 transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
@@ -361,7 +372,7 @@
             .header-text h1 {
                 font-size: var(--text-xl);
             }
-            
+
             .subtitle {
                 font-size: var(--text-md);
             }
@@ -397,6 +408,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Sternenhimmel -->
     <div class="stars" id="stars"></div>
@@ -409,7 +421,7 @@
         <div class="header scroll-animate">
             <div class="header-content">
                 <img class="header-peppa" id="headerPeppa1" alt="Peppa Pig" onclick="easterEgg()">
-                
+
                 <div class="header-text">
                     <h1>Feline wird 4!</h1>
                     <div class="subtitle">Geburtstagsparty</div>
@@ -491,7 +503,7 @@
         function loadImages() {
             const img1 = document.getElementById('headerPeppa1');
             const img2 = document.getElementById('headerPeppa2');
-            
+
             if (img1) img1.src = PEPPA1_BASE64;
             if (img2) img2.src = PEPPA1_BASE64;
         }
@@ -518,7 +530,7 @@
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const fragment = document.createDocumentFragment();
-            
+
             for (let i = 0; i < 100; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -527,7 +539,7 @@
                 star.style.animationDelay = Math.random() * 3 + 's';
                 fragment.appendChild(star);
             }
-            
+
             starsContainer.appendChild(fragment);
         }
 
@@ -535,24 +547,27 @@
         function createFallingPeppas() {
             const container = document.getElementById('peppaContainer');
             const peppaImages = [PEPPA1_BASE64, PEPPA2_BASE64];
-            
+
             setInterval(() => {
                 const peppa = document.createElement('img');
                 peppa.className = 'falling-peppa';
                 peppa.src = peppaImages[Math.floor(Math.random() * peppaImages.length)];
-                
+
                 const size = Math.random() * 30 + 20;
+                const duration = Math.random() * 5 + 5; // 5-10 Sekunden
+
                 peppa.style.width = size + 'px';
                 peppa.style.height = 'auto';
                 peppa.style.left = Math.random() * 100 + '%';
-                peppa.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                peppa.style.animationDuration = duration + 's';
                 peppa.style.opacity = Math.random() * 0.5 + 0.3;
-                
+
                 container.appendChild(peppa);
-                
+
+                // Entfernen nach GENAU der Animation-Dauer
                 setTimeout(() => {
                     peppa.remove();
-                }, 10000);
+                }, duration * 1000);
             }, 800);
         }
 
@@ -621,10 +636,13 @@
             createConfetti();
             const message = `Hallo!
 
-Gerne kommen wir.
+☑ Wir kommen
+☐ Wir können leider nicht
 
-Anzahl Personen (Kinder + Erwachsene): `;
-            
+Anzahl Personen (Kinder + Erwachsene): 
+
+Viele Grüße!`;
+
             const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
@@ -635,10 +653,13 @@ Anzahl Personen (Kinder + Erwachsene): `;
             const subject = 'Rückmeldung: Feline\'s Geburtstagsparty';
             const body = `Hallo!
 
-Gerne kommen wir. 
+☑ Wir kommen
+☐ Wir können leider nicht
 
-Anzahl Personen (Kinder + Erwachsene): `;
-            
+Anzahl Personen (Kinder + Erwachsene): 
+
+Viele Grüße!`;
+
             window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
 
@@ -705,12 +726,12 @@ END:VCALENDAR`;
             loadImages();
             updateCountdown();
             setInterval(updateCountdown, 1000);
-            
+
             // Nicht-kritische Inhalte verzögert laden
             requestAnimationFrame(() => {
                 createStars();
                 initScrollAnimations();
-                
+
                 // Peppas nach kleiner Verzögerung starten
                 setTimeout(createFallingPeppas, 500);
             });
@@ -720,10 +741,11 @@ END:VCALENDAR`;
         document.addEventListener('DOMContentLoaded', () => {
             const emailLink = document.querySelector('a[href^="mailto:"]');
             const whatsappLink = document.querySelector('a[href*="wa.me"]');
-            
+
             if (emailLink) emailLink.href = `mailto:${CONTACT_EMAIL}`;
             if (whatsappLink) whatsappLink.href = `https://wa.me/${WHATSAPP_NUMBER}`;
         });
     </script>
 </body>
+
 </html>
